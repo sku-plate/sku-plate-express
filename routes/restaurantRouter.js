@@ -6,6 +6,6 @@ const restaurantRouter = Router();
 const authController = new AuthController();
 const restaurantController = new RestaurantController();
 
-restaurantRouter.get('/', authController.verifyKakaoToken, restaurantController.getAllRestaurants);
+restaurantRouter.get('/', restaurantController.getAllRestaurants);
 
 export default restaurantRouter;
