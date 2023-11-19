@@ -86,6 +86,8 @@ class RestaurantController {
       });
     }
   };
+
+  bookmarkRestaurant = async (req, res) => {};
 }
 
 export default RestaurantController;
