@@ -7,5 +7,8 @@ const authController = new AuthController();
 const restaurantController = new RestaurantController();
 
 restaurantRouter.get('/', restaurantController.getAllRestaurants);
+restaurantRouter.post('/', restaurantController.addRestaurant);
+restaurantRouter.get('/:typeOfFood', restaurantController.getOneTypeOfFoodRestaurants);
+restaurantRouter.get('/search/:searchKeyword', restaurantController.searchRestaurant);
 
 export default restaurantRouter;

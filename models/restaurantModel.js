@@ -3,11 +3,16 @@ import mongoose from 'mongoose';
 const restaurantSchema = new mongoose.Schema({
   name: {
     type: String,
+    unique: true,
     required: [true, '이름을 입력해주세요.'],
   },
-  location: {
-    address: String,
-    coordinates: [Number],
+  typeOfFood: {
+    type: String,
+    required: [true, '음식 종류를 입력해주세요.'],
+  },
+  address: {
+    type: String,
+    required: [true, '주소를 입력해주세요.'],
   },
   menu: [
     {
@@ -16,6 +21,7 @@ const restaurantSchema = new mongoose.Schema({
     },
   ],
   images: [String],
+  tags: [String],
   active: {
     type: Boolean,
     default: true,
