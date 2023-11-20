@@ -10,11 +10,6 @@ dotenv.config({ path: './config.env' });
 
 const app = express(); // express 서버 생성
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
-
 // const corsOptions = {
 //   origin: 'https://skuplate.com',
 //   credentials: true,
@@ -31,5 +26,10 @@ app.get('/', (req, res) => {
 
 app.use('/users', userRouter);
 app.use('/restaurants', restaurantRouter);
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 export default app;
