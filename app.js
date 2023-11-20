@@ -27,9 +27,4 @@ app.get('/', (req, res) => {
 app.use('/users', userRouter);
 app.use('/restaurants', restaurantRouter);
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
-
 export default app;
