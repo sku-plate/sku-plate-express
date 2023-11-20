@@ -9,5 +9,8 @@ userRouter.get('/verify', authController.verifyKakaoToken, (req, res) => {
   res.json({ message: '액세스 토큰이 유효합니다.' });
 });
 userRouter.get('/kakao/logout', authController.kakaoLogout);
+// userRouter.post('/verify', authController.verifyKakaoToken, (req, res) => {
+//   res.json({ message: '액세스 토큰이 유효합니다.' });
+// });
 
 export default userRouter;

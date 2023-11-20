@@ -23,6 +23,25 @@ class RestaurantController {
     }
   };
 
+  getRestaurant = async (req, res) => {
+    const { restaurantId } = req.params;
+
+    try {
+      const restaurant = await Restaurant.findById({ _id: restaurantId });
+      console.log(restaurant);
+      res.status(200).json({
+        status: 'success',
+        message: '식당 조회 성공',
+        restaurant,
+      });
+    } catch {
+      res.status(500).json({
+        status: 'fail',
+        message: '식당 조회 실패',
+      });
+    }
+  };
+
   getAllRestaurants = async (req, res) => {
     const restaurants = await Restaurant.find();
 
@@ -46,7 +65,7 @@ class RestaurantController {
 
       res.status(200).json({
         status: 'success',
-        message: '모든 식당 조회 성공',
+        message: '특정분야 식당 조회 성공',
         length: restaurants.length,
         restaurants,
       });
@@ -137,18 +156,22 @@ class RestaurantController {
       }
 
       if (user.bookmarkedRestaurants.includes(restaurantId)) {
-        return res.status(400).json({
-          status: 'fail',
-          message: '이미 북마크한 식당입니다.',
+        user.bookmarkedRestaurants.pull(restaurantId);
+        await user.save();
+
+        res.status(200).json({
+          status: 'success',
+          message: '식당 북마크 제거 성공',
+        });
+      } else {
+        user.bookmarkedRestaurants.push(restaurantId);
+        await user.save();
+
+        res.status(200).json({
+          status: 'success',
+          message: '식당 북마크 추가 성공',
         });
       }
-
-      await user.updateOne({ $push: { bookmarkedRestaurants: restaurantId } });
-
-      res.status(200).json({
-        status: 'success',
-        message: '식당 북마크 성공',
-      });
     } catch (error) {
       res.status(500).json({
         status: 'error',

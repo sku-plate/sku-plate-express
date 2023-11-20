@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import morgan from 'morgan';
 
 import userRouter from './routes/userRouter.js';
 import restaurantRouter from './routes/restaurantRouter.js';
@@ -14,6 +15,8 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+
+app.use(morgan('dev'));
 
 app.use(express.json({ limit: '10kb' }));
 
