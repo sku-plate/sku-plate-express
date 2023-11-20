@@ -26,6 +26,8 @@ class RestaurantController {
   getAllRestaurants = async (req, res) => {
     const restaurants = await Restaurant.find();
 
+    console.log('getAllRestaurants');
+
     res.status(200).json({
       status: 'success',
       message: '모든 식당 조회 성공',
@@ -39,6 +41,8 @@ class RestaurantController {
 
     try {
       const restaurants = await Restaurant.find({ typeOfFood });
+
+      console.log('getOneTypeOfFoodRestaurants');
 
       res.status(200).json({
         status: 'success',
@@ -87,7 +91,72 @@ class RestaurantController {
     }
   };
 
-  bookmarkRestaurant = async (req, res) => {};
+  getBookmarkedRestaurants = async (req, res) => {
+    try {
+      const user = req.user;
+
+      if (!user) {
+        return res.status(404).json({
+          status: 'fail',
+          message: '유저를 찾을 수 없습니다.',
+        });
+      }
+
+      console.log('getBookmarkedRestaurants');
+
+      const bookmarkedRestaurants = await Restaurant.find({ _id: { $in: user.bookmarkedRestaurants } });
+
+      res.status(200).json({
+        status: 'success',
+        message: '북마크한 식당 조회 성공',
+        length: bookmarkedRestaurants.length,
+        bookmarkedRestaurants,
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 'error',
+        message: '서버 에러 발생',
+        error: error.message,
+      });
+    }
+  };
+
+  bookmarkRestaurant = async (req, res) => {
+    try {
+      const { restaurantId } = req.params;
+      const restaurant = await Restaurant.findById(restaurantId);
+      const user = req.user;
+
+      console.log({ restaurant, user });
+
+      if (!restaurant || !user) {
+        return res.status(404).json({
+          status: 'fail',
+          message: '식당 또는 유저를 찾을 수 없습니다.',
+        });
+      }
+
+      if (user.bookmarkedRestaurants.includes(restaurantId)) {
+        return res.status(400).json({
+          status: 'fail',
+          message: '이미 북마크한 식당입니다.',
+        });
+      }
+
+      await user.updateOne({ $push: { bookmarkedRestaurants: restaurantId } });
+
+      res.status(200).json({
+        status: 'success',
+        message: '식당 북마크 성공',
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 'error',
+        message: '서버 에러 발생',
+        error: error.message,
+      });
+    }
+  };
 }
 
 export default RestaurantController;

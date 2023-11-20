@@ -8,7 +8,13 @@ const restaurantController = new RestaurantController();
 
 restaurantRouter.get('/', restaurantController.getAllRestaurants);
 restaurantRouter.post('/', restaurantController.addRestaurant);
-restaurantRouter.get('/:typeOfFood', restaurantController.getOneTypeOfFoodRestaurants);
+restaurantRouter.get('/type/:typeOfFood', restaurantController.getOneTypeOfFoodRestaurants);
 restaurantRouter.get('/search/:searchKeyword', restaurantController.searchRestaurant);
+restaurantRouter.get('/bookmark', authController.verifyKakaoToken, restaurantController.getBookmarkedRestaurants);
+restaurantRouter.get(
+  '/:restaurantId/bookmark',
+  authController.verifyKakaoToken,
+  restaurantController.bookmarkRestaurant,
+);
 
 export default restaurantRouter;
