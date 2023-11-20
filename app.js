@@ -11,7 +11,7 @@ dotenv.config({ path: './config.env' });
 const app = express(); // express 서버 생성
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://skuplate.com',
   credentials: true,
 };
 app.use(cors(corsOptions));
