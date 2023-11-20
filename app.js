@@ -9,11 +9,12 @@ dotenv.config({ path: './config.env' });
 
 const app = express(); // express 서버 생성
 
-app.use(cors());
-// CORS 설정: 'asdf.com' 도메인만 허용
-// const corsOptions = {
-//   origin: 'http://asdf.com',
-// };
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use(express.json({ limit: '10kb' }));
 
 app.get('/', (req, res) => {
