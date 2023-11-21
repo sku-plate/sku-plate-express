@@ -47,8 +47,6 @@ class RestaurantController {
 
     console.log('getAllRestaurants');
 
-    res.header('Access-Control-Allow-Origin', '*');
-
     res.status(200).json({
       status: 'success',
       message: '모든 식당 조회 성공',
